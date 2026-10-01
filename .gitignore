@@ -1,0 +1,15 @@
+# FastF1 cache
+f1_cache/
+cache/
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+
+# Editor settings
+.vscode/
+
+# Raw data stays local
+data/raw/*
+!data/raw/.gitkeep
