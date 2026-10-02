@@ -3,54 +3,52 @@ import pandas as pd
 import os
 
 def fetch_and_process_race_data(cache_dir='data/cache', output_dir='data/processed'):
-    # Enable caching to store API requests locally
     os.makedirs(cache_dir, exist_ok=True)
     fastf1.Cache.enable_cache(cache_dir)
 
-    # Define the 5 races for the dataset
     races = [
-        {'year': 2023, 'location': 'Bahrain'},
-        {'year': 2023, 'location': 'Monaco'},
-        {'year': 2023, 'location': 'Silverstone'},
-        {'year': 2023, 'location': 'Monza'},
-        {'year': 2023, 'location': 'Suzuka'}
+        {'year': 2025, 'location': 'Bahrain'},
+        {'year': 2025, 'location': 'Monaco'},
+        {'year': 2025, 'location': 'Silverstone'},
+        {'year': 2025, 'location': 'Monza'},
+        {'year': 2025, 'location': 'Suzuka'}
     ]
 
-    all_laps = []
-    all_weather = []
+    all_merged_laps = []
 
     for race in races:
         print(f"Fetching {race['year']} {race['location']}...")
         session = fastf1.get_session(race['year'], race['location'], 'R')
         session.load(telemetry=True, weather=True)
         
-        # Extract Laps
-        laps = session.laps
+        laps = session.laps.copy()
+        weather = session.weather_data.copy()
         laps['Race'] = race['location']
         laps['Year'] = race['year']
         
-        # Extract Weather
-        weather = session.weather_data
-        weather['Race'] = race['location']
-        weather['Year'] = race['year']
+        laps = laps.dropna(subset=['LapTime', 'Driver']).copy()
+        laps['LapTime_s'] = laps['LapTime'].dt.total_seconds()
         
-        all_laps.append(laps)
-        all_weather.append(weather)
+        laps['Time_sec'] = pd.to_timedelta(laps['Time']).dt.total_seconds()
+        weather['Time_sec'] = pd.to_timedelta(weather['Time']).dt.total_seconds()
+        
+        laps = laps.sort_values('Time_sec')
+        weather = weather.sort_values('Time_sec')
+        
+        merged_race = pd.merge_asof(
+            laps, 
+            weather, 
+            on='Time_sec', 
+            direction='nearest'
+        )
+        
+        all_merged_laps.append(merged_race)
 
-    # Combine all race data
-    combined_laps = pd.concat(all_laps, ignore_index=True)
-    combined_weather = pd.concat(all_weather, ignore_index=True)
-
-    # Clean the telemetry (drop missing driver/lap data and calculate raw seconds)
-    cleaned_laps = combined_laps.dropna(subset=['LapTime', 'Driver'])
-    cleaned_laps['LapTime_s'] = cleaned_laps['LapTime'].dt.total_seconds()
-
-    # Export to the processed folder for Members 2 & 4
+    final_dataset = pd.concat(all_merged_laps, ignore_index=True)
+    
     os.makedirs(output_dir, exist_ok=True)
-    cleaned_laps.to_csv(f'{output_dir}/cleaned_laps.csv', index=False)
-    combined_weather.to_csv(f'{output_dir}/weather_data.csv', index=False)
-    print("Pipeline execution complete. CSVs saved to data/processed/")
+    final_dataset.to_csv(f'{output_dir}/cleaned_laps.csv', index=False)
+    print("Pipeline complete. Unified CSV saved to data/processed/cleaned_laps.csv")
 
 if __name__ == "__main__":
     fetch_and_process_race_data()
-    
