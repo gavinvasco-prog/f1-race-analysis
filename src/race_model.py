@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import LeaveOneGroupOut
+from sklearn.model_selection import LeaveOneGroupOut, cross_val_predict
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
@@ -13,30 +13,29 @@ def prepare_features(df):
     features = ['LapNumber', 'Stint', 'TyreLife', 'LapTime_s', 'AirTemp', 'TrackTemp']
     target = 'Position'
     
-    clean_df = df[features + [target, 'EventName']].dropna()
+    # Using 'Race' column instead of 'EventName' to match processed CSV schema
+    clean_df = df[features + [target, 'Race']].dropna()
     X = clean_df[features]
     y = clean_df[target]
-    groups = clean_df['EventName']
+    groups = clean_df['Race']
     
     return X, y, groups, features
 
 def train_race_model_group_split(X, y, groups):
-    """Trains Random Forest using Group-based split to prevent cross-lap data leakage."""
+    """Evaluates Random Forest across all races using LeaveOneGroupOut cross-validation to prevent leakage."""
     logo = LeaveOneGroupOut()
-    train_idx, test_idx = next(logo.split(X, y, groups))
-    
-    X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
-    y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
-    
     model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
     
-    y_pred = model.predict(X_test)
+    # Generate predictions across all race groups via cross-validation
+    y_pred = cross_val_predict(model, X, y, groups=groups, cv=logo)
+    
+    # Fit final model on full dataset for downstream feature analysis
+    model.fit(X, y)
     
     metrics = {
-        'MAE': mean_absolute_error(y_test, y_pred),
-        'RMSE': np.sqrt(mean_squared_error(y_test, y_pred)),
-        'R2': r2_score(y_test, y_pred)
+        'MAE': mean_absolute_error(y, y_pred),
+        'RMSE': np.sqrt(mean_squared_error(y, y_pred)),
+        'R2': r2_score(y, y_pred)
     }
     
     return model, metrics
