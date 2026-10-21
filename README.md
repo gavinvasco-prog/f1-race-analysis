@@ -1,73 +1,42 @@
+# Formula 1 Data Analytics & Race Prediction
 
-#  Formula 1 Data Analytics & Race Prediction Pipeline
+A data science project analysing Formula 1 timing data from five races of the 2025 season: lap times, tyre degradation, pit stop strategy, weather and race outcome prediction.
 
-An end-to-end data science and machine learning framework designed to process raw Formula 1 race telemetry, evaluate tire degradation profiles, analyze driver stint performance, and predict final race outcomes across multiple Grands Prix.
+Data source: [FastF1](https://github.com/theOehrly/Fast-F1)
 
 ---
 
-##  Team Roles & Responsibilities
+## Team Roles & Responsibilities
 
 | Team Member | Role | Feature Branch | Core Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **Member 1** | Data Pipeline Lead | `feature/data-pipeline-weather` | FastF1 telemetry extraction, weather data integration, CSV data cleaning |
-| **Member 2** | Tyre Strategy & Git Co-Lead | `feature/tyre-degradation-modeling` | Compound decay modeling, stint degradation analysis, undercut strategy modeling |
-| **Member 3** | Visualizations & Documentation Lead | `feature/visualizations-readme` | Telemetry plots, lap evolution figures, interactive scripts, system documentation |
-| **Member 4** | Predictive ML & Git Co-Lead | `feature/ml-race-prediction` | Feature engineering, supervised classification/regression models, evaluation metrics |
+| **Member 1** | Data Pipeline Lead | `feature/data-pipeline-weather` | FastF1 data extraction, weather data integration, CSV data cleaning |
+| **Member 2** | Tyre Strategy & Git Co-Lead | `feature/tyre-degradation-modeling` | Tyre degradation modelling, lap time prediction, undercut strategy analysis |
+| **Member 3** | Visualizations & Documentation Lead | `feature/visualizations-readme` | Speed trap, lap evolution and tyre age charts, project documentation |
+| **Member 4** | Predictive ML & Git Co-Lead | `feature/ml-race-prediction` | Feature engineering, race outcome prediction, model evaluation |
 
 ---
 
-## Key Insights & Visualizations
+## Key Visualizations
 
 ### 1. Speed Trap Performance
-Analysis of peak velocity measured at the Speed Trap (`SpeedST`) across top constructor teams.
+Speed trap (`SpeedST`) values for the six teams with the most valid laps.
 
-
-### 2. Race Lap Evolution
-Tracking driver stint progression, lap time consistency, and pit stop windows during the Bahrain Grand Prix.
-
-### 3. Tire Compound Degradation
-Comparing compound lap time decay against tire age (`TyreLife`) across `SOFT`, `MEDIUM`, `HARD`, and `INTERMEDIATE` sets.
-
-=======
 ![Top Speed Comparison](reports/figures/top_speed_comparison.png)
 
 ### 2. Race Lap Evolution
-Tracking driver stint progression, lap time consistency, and pit stop windows during the Bahrain Grand Prix.
+Lap times for five drivers across the Bahrain Grand Prix.
 
-![Lap Time Evolution](reports/figures/time_lap_evolution.png)
+![Lap Time Evolution](reports/figures/lap_time_evolution.png)
 
-### 3. Tire Compound Degradation
-Comparing compound lap time decay against tire age (`TyreLife`) across `SOFT`, `MEDIUM`, `HARD`, and `INTERMEDIATE` sets.
+### 3. Lap Time vs Tyre Age
+All valid laps from the five races, coloured by tyre compound.
 
 ![Tire Degradation Profile](reports/figures/tire_degradation_profile.png)
 
+More detail: [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md)
 
 ---
-
-## Repository Structure
-
-```text
-f1-race-analysis/
-├── data/
-│   ├── raw/                      # Raw telemetry extracted from FastF1
-│   └── processed/                # Cleaned CSV datasets (cleaned_laps.csv)
-├── notebooks/                    # Interactive Jupyter Notebooks
-│   ├── 01_data_pipeline.ipynb
-│   ├── 02_tyre_degradation.ipynb
-│   ├── 03_visualizations.ipynb   # Member 3 EDA & Visualizations
-│   └── 04_ml_prediction.ipynb
-├── reports/
-│   └── figures/                  # Exported publication-ready charts (.png)
-├── src/                          # Modular Python source scripts
-│   └── generate_visualizations.py
-├── .gitignore
-├── PROJECT_DOCUMENTATION.md      # Comprehensive technical documentation
-├── README.md                     # Project overview
-└── requirements.txt              # Project dependencies
-```
-
----
-
 
 ## Installation & Setup
 
@@ -77,18 +46,16 @@ f1-race-analysis/
    cd f1-race-analysis
    ```
 
-2. **Create a virtual environment (optional but recommended)**:
+2. **Create and activate a virtual environment**:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python -m venv .venv
    ```
+   - Windows: `.venv\Scripts\Activate.ps1`
+   - Mac/Linux: `source .venv/bin/activate`
 
 3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the visualization pipeline**:
-   ```bash
-   python src/generate_visualizations.py
-   ```
+4. **Run the notebooks** in the `notebooks/` folder.
