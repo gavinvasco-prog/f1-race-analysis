@@ -1,3 +1,4 @@
+
 #  Formula 1 Data Analytics & Race Prediction Pipeline
 
 An end-to-end data science and machine learning framework designed to process raw Formula 1 race telemetry, evaluate tire degradation profiles, analyze driver stint performance, and predict final race outcomes across multiple Grands Prix.
@@ -20,11 +21,26 @@ An end-to-end data science and machine learning framework designed to process ra
 ### 1. Speed Trap Performance
 Analysis of peak velocity measured at the Speed Trap (`SpeedST`) across top constructor teams.
 
+
 ### 2. Race Lap Evolution
 Tracking driver stint progression, lap time consistency, and pit stop windows during the Bahrain Grand Prix.
 
 ### 3. Tire Compound Degradation
 Comparing compound lap time decay against tire age (`TyreLife`) across `SOFT`, `MEDIUM`, `HARD`, and `INTERMEDIATE` sets.
+
+=======
+![Top Speed Comparison](reports/figures/top_speed_comparison.png)
+
+### 2. Race Lap Evolution
+Tracking driver stint progression, lap time consistency, and pit stop windows during the Bahrain Grand Prix.
+
+![Lap Time Evolution](reports/figures/time_lap_evolution.png)
+
+### 3. Tire Compound Degradation
+Comparing compound lap time decay against tire age (`TyreLife`) across `SOFT`, `MEDIUM`, `HARD`, and `INTERMEDIATE` sets.
+
+![Tire Degradation Profile](reports/figures/tire_degradation_profile.png)
+
 
 ---
 

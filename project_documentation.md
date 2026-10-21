@@ -74,6 +74,16 @@ The visualization module handles the automated export of analytical figures used
 * Sharp spikes highlight in-laps and out-laps around pit windows, while linear slope decreases reflect fuel-load burnoff balancing tire degradation.
 
 ### 4.3 Tire Compound Performance Decay (![Tire Degradation Profile](image-2.png))
+=======
+### 4.1 Speed Trap Efficiency (![Top Speed Comparison](reports/figures/top_speed_comparison.png)`)
+* Measures straight-line aerodynamic efficiency and engine power unit performance across top constructor teams.
+* Outliers identify low-drag setups tailored for high-speed circuits vs. high-downforce packages.
+
+### 4.2 Stint Pace & Strategy Evolution (![Lap Time Evolution](reports/figures/time_lap_evolution.png))
+* Tracks race leader lap times sequentially across the stint.
+* Sharp spikes highlight in-laps and out-laps around pit windows, while linear slope decreases reflect fuel-load burnoff balancing tire degradation.
+
+### 4.3 Tire Compound Performance Decay (![Tire Degradation Profile](reports/figures/tire_degradation_profile.png))
 * Evaluates degradation rates across different tire compounds (`SOFT`, `MEDIUM`, `HARD`).
 * Demonstrates performance crossover points critical for undercut/overcut pit strategy decisions.
 
